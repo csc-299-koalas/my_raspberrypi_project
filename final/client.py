@@ -3,7 +3,7 @@ from picamera2 import Picamera2
 import requests
 import time
 
-pir = MotionSensor(4)
+pir = MotionSensor(18)
 cam = Picamera2()
 cam.start()
 
