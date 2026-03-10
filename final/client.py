@@ -17,7 +17,7 @@ while True:
         cam.capture_file("pic.jpg")
 
         f = open("pic.jpg", "rb")
-        requests.post("http://ip:8080/upload", files={"file": f})
+        requests.post("http://172.20.10.9:8080/upload", files={"file": f})
         f.close()
 
         last = time.time()
