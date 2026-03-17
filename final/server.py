@@ -11,7 +11,7 @@ PIN = "0000"
 LAST_IMAGE = "latest.jpg"
 LAST_TIME = None
 
-GMAIL_USER = 'koalascss299@gmail.com'
+GMAIL_USER = 'koalascsc299@gmail.com'
 GMAIL_PASS = 'your password'
 SMTP_SERVER = 'smtp.gmail.com' # or other SMTP server
 SMTP_PORT = 587
@@ -36,25 +36,24 @@ def buzzer_loop():
         buzzer.off()
         time.sleep(0.4)
 
+def send_email(recipient, subject, text):
+    smtpserver = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(GMAIL_USER, GMAIL_PASS)
+    header = 'To:' + recipient + '\n' + 'From: ' + GMAIL_USER
+    header = header + '\n' + 'Subject:' + subject + '\n'
+    msg = header + '\n' + text + ' \n\n'
+    smtpserver.sendmail(GMAIL_USER, recipient, msg)
+    smtpserver.close()
 
 def trigger_alarm():
     global alarm_triggered
 
     if not alarm_triggered:
         alarm_triggered = True
-        
-        smtpserver = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        smtpserver.ehlo()
-        smtpserver.starttls()
-        smtpserver.ehlo
-        smtpserver.login(GMAIL_USER, GMAIL_PASS)
-        recipient = "mmrocze1@depaul.edu"
-        header = 'To:' + recipient + '\n' + 'From: ' + GMAIL_USER
-        header = header + '\n' + 'Subject:' + "Alarm Triggered" + '\n'
-        msg = header + '\n' + f"Alarm was activated at {LAST_TIME}" + ' \n\n'
-        smtpserver.sendmail(GMAIL_USER, recipient, msg)
-        smtpserver.close()
-
+        send_email('mmrocze1@depaul.edu', 'Alarm Triggered', 'The alarm has been triggered at ' + time.strftime("%Y-%m-%d %H:%M:%S"))
         threading.Thread(target=buzzer_loop, daemon=True).start()
 
 
