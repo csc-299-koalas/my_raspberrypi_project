@@ -181,7 +181,7 @@ button.innerText="ARM"
 
 if(data.entry_delay){
 document.getElementById("countdown").innerText=
-"Entry Delay: "+data.entry_delay+"s"
+"Entry Timeout: "+data.entry_delay+"s"
 }else{
 document.getElementById("countdown").innerText=""
 }
