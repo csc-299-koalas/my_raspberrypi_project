@@ -12,8 +12,8 @@ last = 0
 while True:
     pir.wait_for_motion()
 
-	# 10 seconds between requests to reduce spam
-    if time.time() - last > 10:
+	# 5 seconds between requests to reduce spam
+    if time.time() - last > 5:
         cam.capture_file("pic.jpg")
 
         f = open("pic.jpg", "rb")
