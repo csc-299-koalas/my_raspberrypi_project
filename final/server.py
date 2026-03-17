@@ -3,12 +3,18 @@ import os
 import time
 import threading
 from gpiozero import Buzzer
+import smtplib
 
 app = Bottle()
 
 PIN = "0000"
 LAST_IMAGE = "latest.jpg"
 LAST_TIME = None
+
+GMAIL_USER = 'koalascss299@gmail.com'
+GMAIL_PASS = 'your password'
+SMTP_SERVER = 'smtp.gmail.com' # or other SMTP server
+SMTP_PORT = 587
 
 ENTRY_DELAY = 60
 
@@ -36,6 +42,19 @@ def trigger_alarm():
 
     if not alarm_triggered:
         alarm_triggered = True
+        
+        smtpserver = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        smtpserver.ehlo()
+        smtpserver.starttls()
+        smtpserver.ehlo
+        smtpserver.login(GMAIL_USER, GMAIL_PASS)
+        recipient = "mmrocze1@depaul.edu"
+        header = 'To:' + recipient + '\n' + 'From: ' + GMAIL_USER
+        header = header + '\n' + 'Subject:' + "Alarm Triggered" + '\n'
+        msg = header + '\n' + f"Alarm was activated at {LAST_TIME}" + ' \n\n'
+        smtpserver.sendmail(GMAIL_USER, recipient, msg)
+        smtpserver.close()
+
         threading.Thread(target=buzzer_loop, daemon=True).start()
 
 
@@ -48,7 +67,7 @@ def stop_alarm():
 def entry_timer():
     global entry_deadline
 
-    while entry_deadline and time.time() < entry_deadline:
+    while entry_deadline and time.time() < entry_deadline and not disarmed:
         time.sleep(1)
 
     if not disarmed and entry_deadline:
